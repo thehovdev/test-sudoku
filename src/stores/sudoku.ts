@@ -270,7 +270,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
     }
     
     timerInterval.value = window.setInterval(() => {
-      if (!gamePaused.value) {
+      if (!gamePaused.value && !gameCompleted.value) {
         elapsedTime.value = Math.floor((Date.now() - startTime.value) / 1000);
       }
     }, 1000);
@@ -278,12 +278,29 @@ export const useSudokuStore = defineStore('sudoku', () => {
 
   // Pause the game
   const pauseGame = () => {
+    if (timerInterval.value) {
+      clearInterval(timerInterval.value);
+      timerInterval.value = null;
+    }
     gamePaused.value = true;
   };
 
   // Resume the game
   const resumeGame = () => {
     gamePaused.value = false;
+    // Adjust the start time to account for the pause duration
+    startTime.value = Date.now() - (elapsedTime.value * 1000);
+    
+    // Restart the timer
+    if (timerInterval.value) {
+      clearInterval(timerInterval.value);
+    }
+    
+    timerInterval.value = window.setInterval(() => {
+      if (!gamePaused.value && !gameCompleted.value) {
+        elapsedTime.value = Math.floor((Date.now() - startTime.value) / 1000);
+      }
+    }, 1000);
   };
 
   // Select a cell
