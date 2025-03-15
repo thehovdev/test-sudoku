@@ -472,14 +472,17 @@ export const useSudokuStore = defineStore('sudoku', () => {
 
   // Check if the game is completed
   const checkGameCompletion = () => {
+    // Check if all cells are filled (regardless of correctness)
     for (let row = 0; row < GRID_SIZE; row++) {
       for (let col = 0; col < GRID_SIZE; col++) {
-        if (gameState.value[row][col].value !== solution.value[row][col]) {
+        // If any cell is empty, game is not complete
+        if (gameState.value[row][col].value === null) {
           return;
         }
       }
     }
     
+    // If we get here, all cells are filled
     // Game completed
     gameCompleted.value = true;
     

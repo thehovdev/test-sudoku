@@ -54,7 +54,7 @@ const startNewGame = () => {
 }
 
 .completion-modal {
-  @apply bg-white rounded-xl shadow-xl p-8 max-w-md w-full mx-4 animate-bounce-in;
+  @apply bg-white rounded-xl shadow-xl p-8 max-w-md w-full mx-4;
 }
 
 .title {
