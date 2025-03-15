@@ -237,18 +237,23 @@ export const useSudokuStore = defineStore('sudoku', () => {
       }
     }
     
-    // Randomly reveal cells
-    const positions = [];
+    // Create an array of all possible positions and shuffle it
+    const allPositions = [];
     for (let row = 0; row < GRID_SIZE; row++) {
       for (let col = 0; col < GRID_SIZE; col++) {
-        positions.push({ row, col });
+        allPositions.push({ row, col });
       }
     }
     
-    shuffle(positions);
+    // Shuffle the positions array
+    for (let i = allPositions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allPositions[i], allPositions[j]] = [allPositions[j], allPositions[i]];
+    }
     
+    // Reveal the first visibleCells positions
     for (let i = 0; i < visibleCells; i++) {
-      const { row, col } = positions[i];
+      const { row, col } = allPositions[i];
       gameState.value[row][col].value = solution.value[row][col];
       gameState.value[row][col].isOriginal = true;
     }
